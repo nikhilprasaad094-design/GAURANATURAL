@@ -1,0 +1,282 @@
+import { Link } from 'react-router-dom';
+import { ArrowRight, Leaf, Sparkles, Heart } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+
+const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
+
+const HomePage = () => {
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const [productsRes, categoriesRes] = await Promise.all([
+        axios.get(`${API}/products`),
+        axios.get(`${API}/categories`)
+      ]);
+      setProducts(productsRes.data.slice(0, 6));
+      setCategories(categoriesRes.data.slice(0, 3));
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  return (
+    <div className="animate-fade-in">
+      {/* Hero Section */}
+      <section className="relative h-screen flex items-center justify-center overflow-hidden" data-testid="hero-section">
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: 'url(https://images.unsplash.com/photo-1426244434402-9d59aceabbf3?crop=entropy&cs=srgb&fm=jpg&q=85)',
+            backgroundAttachment: 'fixed'
+          }}
+        />
+        <div className="hero-overlay absolute inset-0" />
+        <div className="relative z-10 text-center px-4 max-w-5xl">
+          <div className="mb-6">
+            <h1 className="text-6xl sm:text-7xl lg:text-8xl font-serif font-bold text-white mb-3 text-shadow" data-testid="hero-title">
+              GAURA
+            </h1>
+            <p className="text-xl sm:text-2xl text-[#D5A147] font-serif italic mb-2">
+              Touch of Nature
+            </p>
+          </div>
+          
+          <p className="text-lg sm:text-xl text-white/95 mb-6 max-w-3xl mx-auto">
+            A symbol of peace, purity, and connection to nature.
+          </p>
+          
+          <p className="text-base sm:text-lg text-white/90 mb-8 max-w-3xl mx-auto">
+            Handcrafted eco-friendly aromatics from recycled temple flowers and cow dung.
+            Experience spirituality and the essence of Vedic tradition in every product.
+          </p>
+
+          {/* Logo Concept */}
+          <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-sm p-6 mb-8 max-w-3xl mx-auto">
+            <p className="text-sm sm:text-base text-white/95 mb-4 font-semibold">Our Logo Tells Our Story:</p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm text-white/90">
+              <div className="flex flex-col items-center text-center">
+                <span className="text-4xl font-serif font-bold text-[#D5A147] mb-2">G</span>
+                <p className="leading-relaxed">Represents style and <span className="font-semibold text-white">modernism</span></p>
+              </div>
+              <div className="flex flex-col items-center text-center">
+                <span className="text-4xl font-serif font-bold text-[#D5A147] mb-2">U</span>
+                <p className="leading-relaxed">Forms a <span className="font-semibold text-white">drop</span> representing our itra segment</p>
+              </div>
+              <div className="flex flex-col items-center text-center">
+                <span className="text-4xl font-serif font-bold text-[#D5A147] mb-2">A</span>
+                <p className="leading-relaxed">Negative space forms a <span className="font-semibold text-white">flower petal</span></p>
+              </div>
+            </div>
+          </div>
+
+          <Link to="/products">
+            <Button size="lg" className="bg-primary hover:bg-primary/90 text-white px-10 py-6 text-lg shadow-lg hover:shadow-xl transition-all duration-400" data-testid="hero-shop-button">
+              Explore Collection
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+          </Link>
+        </div>
+      </section>
+
+      {/* Shop by Category */}
+      <section className="py-24 bg-background">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl sm:text-5xl font-serif font-bold text-foreground mb-4" data-testid="categories-title">
+              Shop by Category
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Discover our handcrafted, charcoal-free aromatics. Every product promotes air purification and stress relief.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <Link to="/products?category=Incense & Aromatics">
+              <Card className="group relative overflow-hidden border-[#D5A147]/20 hover:border-[#D5A147] transition-all duration-500 h-64 hover:shadow-[0_12px_28px_rgba(213,161,71,0.15)]" data-testid="category-card-0">
+                <div className="absolute inset-0 bg-gradient-to-b from-[#633014]/60 to-[#633014]/90" />
+                <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
+                  <h3 className="text-2xl font-serif font-bold text-white z-10 mb-3">Incense & Aromatics</h3>
+                  <p className="text-white/90 text-sm z-10 mb-4">Sambrani, Dhoop Cone, Agarbatti, Bamboo-less Sticks</p>
+                  <div className="flex flex-wrap gap-2 justify-center z-10">
+                    <span className="text-xs px-2 py-1 bg-[#D5A147]/90 text-white rounded">Handmade</span>
+                    <span className="text-xs px-2 py-1 bg-[#D5A147]/90 text-white rounded">Charcoal-free</span>
+                  </div>
+                </div>
+              </Card>
+            </Link>
+
+            <Link to="/products?category=Fragrances">
+              <Card className="group relative overflow-hidden border-[#D5A147]/20 hover:border-[#D5A147] transition-all duration-500 h-64 hover:shadow-[0_12px_28px_rgba(213,161,71,0.15)]" data-testid="category-card-1">
+                <div className="absolute inset-0 bg-gradient-to-b from-[#633014]/60 to-[#633014]/90" />
+                <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
+                  <h3 className="text-2xl font-serif font-bold text-white z-10 mb-3">Fragrances</h3>
+                  <p className="text-white/90 text-sm z-10 mb-4">Ittar, Solid Perfumes, Car Perfumes, Essential Oils</p>
+                  <div className="flex flex-wrap gap-2 justify-center z-10">
+                    <span className="text-xs px-2 py-1 bg-[#D5A147]/90 text-white rounded">Handmade</span>
+                    <span className="text-xs px-2 py-1 bg-[#D5A147]/90 text-white rounded">Natural</span>
+                  </div>
+                </div>
+              </Card>
+            </Link>
+
+            <Link to="/products?category=Personal Care">
+              <Card className="group relative overflow-hidden border-[#D5A147]/20 hover:border-[#D5A147] transition-all duration-500 h-64 hover:shadow-[0_12px_28px_rgba(213,161,71,0.15)]" data-testid="category-card-2">
+                <div className="absolute inset-0 bg-gradient-to-b from-[#633014]/60 to-[#633014]/90" />
+                <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
+                  <h3 className="text-2xl font-serif font-bold text-white z-10 mb-3">Personal Care</h3>
+                  <p className="text-white/90 text-sm z-10 mb-4">Shampoo, Soft Bar Soap, Body Shower Gel</p>
+                  <div className="flex flex-wrap gap-2 justify-center z-10">
+                    <span className="text-xs px-2 py-1 bg-[#D5A147]/90 text-white rounded">Handmade</span>
+                    <span className="text-xs px-2 py-1 bg-[#D5A147]/90 text-white rounded">Charcoal-free</span>
+                  </div>
+                </div>
+              </Card>
+            </Link>
+
+            <Link to="/products?category=Utility">
+              <Card className="group relative overflow-hidden border-[#D5A147]/20 hover:border-[#D5A147] transition-all duration-500 h-64 hover:shadow-[0_12px_28px_rgba(213,161,71,0.15)]" data-testid="category-card-3">
+                <div className="absolute inset-0 bg-gradient-to-b from-[#633014]/60 to-[#633014]/90" />
+                <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
+                  <h3 className="text-2xl font-serif font-bold text-white z-10 mb-3">Utility</h3>
+                  <p className="text-white/90 text-sm z-10 mb-4">Candles, Mosquito Repellents</p>
+                  <div className="flex flex-wrap gap-2 justify-center z-10">
+                    <span className="text-xs px-2 py-1 bg-[#D5A147]/90 text-white rounded">Handmade</span>
+                    <span className="text-xs px-2 py-1 bg-[#D5A147]/90 text-white rounded">Air purification</span>
+                  </div>
+                </div>
+              </Card>
+            </Link>
+          </div>
+
+          {/* Key Benefits Banner */}
+          <div className="mt-16 bg-gradient-to-r from-[#D5A147] to-[#C39138] rounded-sm p-8 text-center">
+            <h3 className="text-2xl font-serif font-bold text-white mb-4">Why Choose GAURA Naturals?</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-white">
+              <div>
+                <p className="font-semibold mb-1">✓ 100% Handmade</p>
+                <p className="text-sm text-white/90">Crafted by village women artisans</p>
+              </div>
+              <div>
+                <p className="font-semibold mb-1">✓ Charcoal-Free Formula</p>
+                <p className="text-sm text-white/90">Chemical-free, pure ingredients</p>
+              </div>
+              <div>
+                <p className="font-semibold mb-1">✓ Air Purification & Stress Relief</p>
+                <p className="text-sm text-white/90">Wellness benefits in every product</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Products */}
+      <section className="py-24 bg-muted/30">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl sm:text-5xl font-serif font-bold text-foreground mb-4">
+              Featured Products
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {products.map((product) => (
+              <Link to={`/products/${product.id}`} key={product.id}>
+                <Card className="product-card-hover group bg-white border-border hover:border-primary/50 transition-all duration-500 overflow-hidden" data-testid={`product-card-${product.id}`}>
+                  <div className="aspect-square overflow-hidden">
+                    <img
+                      src={product.images[0] || 'https://images.unsplash.com/photo-1710705012589-f71f6e952fb9?crop=entropy&cs=srgb&fm=jpg&q=85'}
+                      alt={product.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="p-6">
+                    <div className="flex gap-2 mb-2">
+                      {product.labels?.map((label, idx) => (
+                        <span key={idx} className="text-xs px-2 py-1 bg-accent/10 text-accent rounded">
+                          {label}
+                        </span>
+                      ))}
+                    </div>
+                    <h3 className="text-xl font-serif font-semibold mb-2">{product.name}</h3>
+                    <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{product.description}</p>
+                    <div className="flex items-center justify-between">
+                      <span className="text-2xl font-bold text-primary">${product.price.toFixed(2)}</span>
+                      <Button variant="ghost" className="text-primary hover:text-primary/80">
+                        View Details
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+              </Link>
+            ))}
+          </div>
+
+          <div className="text-center mt-12">
+            <Link to="/products">
+              <Button size="lg" variant="outline" className="border-2 border-primary text-primary hover:bg-primary hover:text-white">
+                View All Products
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Values Section */}
+      <section className="py-24 bg-background">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <Card className="p-8 text-center border-[#D5A147]/20 hover:border-[#D5A147] transition-all duration-500 hover:shadow-[0_8px_24px_rgba(213,161,71,0.15)]">
+              <Leaf className="h-12 w-12 text-[#D5A147] mx-auto mb-4" />
+              <h3 className="text-xl font-serif font-semibold mb-2 text-[#633014]">Eco-Friendly</h3>
+              <p className="text-muted-foreground text-sm">
+                Made from recycled temple flowers and cow dung, supporting environmental sustainability.
+              </p>
+            </Card>
+            <Card className="p-8 text-center border-[#D5A147]/20 hover:border-[#D5A147] transition-all duration-500 hover:shadow-[0_8px_24px_rgba(213,161,71,0.15)]">
+              <Sparkles className="h-12 w-12 text-[#D5A147] mx-auto mb-4" />
+              <h3 className="text-xl font-serif font-semibold mb-2 text-[#633014]">Handcrafted</h3>
+              <p className="text-muted-foreground text-sm">
+                Lovingly crafted by village women artisans, preserving traditional methods.
+              </p>
+            </Card>
+            <Card className="p-8 text-center border-[#D5A147]/20 hover:border-[#D5A147] transition-all duration-500 hover:shadow-[0_8px_24px_rgba(213,161,71,0.15)]">
+              <Heart className="h-12 w-12 text-[#D5A147] mx-auto mb-4" />
+              <h3 className="text-xl font-serif font-semibold mb-2 text-[#633014]">Pure & Natural</h3>
+              <p className="text-muted-foreground text-sm">
+                Free from harmful chemicals, bringing the purest essence of nature to your space.
+              </p>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-24 bg-primary text-white">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-4xl sm:text-5xl font-serif font-bold mb-6">
+            Experience the Essence of Tradition
+          </h2>
+          <p className="text-lg text-white/90 mb-8 max-w-2xl mx-auto">
+            Join us in our mission to transform nature's gifts into premium aromatics while supporting local artisans.
+          </p>
+          <Link to="/sustainability">
+            <Button size="lg" variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-primary">
+              Learn Our Story
+            </Button>
+          </Link>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default HomePage;
